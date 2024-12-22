@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="image/yesthisisthefavicon-removebg-preview.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+
+            position: relative;
+            top: 15vw;
+
+            height: 100%;
+            width: 100%;
+            --color: rgba(201, 28, 28, 0.3);
+            background-color: #ffffff;
+            background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
+            background-size: 55px 55px;
+        }
+
+        body.dark-mode {
+            background-color: #303136;
+            color: #ffffff;
+        }
+
+        body.dark-mode .navbar {
+            background: linear-gradient(90deg, #ff8c00, #ff0080);
+        }
+
+        body.dark-mode .container {
+            background-color: #2b2f36;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        body.dark-mode th,
+        body.dark-mode td {
+            color: #ffffff;
+            background-color: #2b2f36;
+        }
+
+        body.dark-mode input[type="text"] {
+            background-color: #333;
+            border: 1px solid #444;
+            color: #fff;
+        }
+
+        body.dark-mode button {
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode .star {
+            color: #888;
+        }
+
+        body.dark-mode .star.selected {
+            color: gold;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #ff6a00, #ff0080);
+            color: #fff;
+            padding: 1rem 2rem;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .left-section {
+            flex: 1;
+        }
+
+        .navbar .logo {
+            max-height: 40px;
+        }
+
+        .navbar .right-section {
+            flex-shrink: 0;
+        }
+
+        .switch {
+            display: block;
+            --width-of-switch: 3.5em;
+            --height-of-switch: 2em;
+            /* size of sliding icon -- sun and moon */
+            --size-of-icon: 1.4em;
+            /* it is like a inline-padding of switch */
+            --slider-offset: 0.3em;
+            position: relative;
+            width: var(--width-of-switch);
+            height: var(--height-of-switch);
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f4f4f5;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: var(--size-of-icon, 1.4em);
+            width: var(--size-of-icon, 1.4em);
+            border-radius: 20px;
+            left: var(--slider-offset, 0.3em);
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(40deg, #ff0080, #ff8c00 70%);
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #303136;
+        }
+
+        input:checked + .slider:before {
+            left: calc(100% - (var(--size-of-icon, 1.4em) + var(--slider-offset, 0.3em)));
+            background: #303136;
+            box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 0 #a3dafb;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            width: 160px;
+        }
+
+        .star {
+            font-size: 24px;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .star.selected {
+            color: gold;
+        }
+        .logo {
+            height: 100px;
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .logo img {
+            height: 1250%;
+            width: auto;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="left-section">
+            <img src="/image/plimg-removebg-preview.png" alt="logo" class="logo">
+        </div>
+        <div class="right-section">
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle" onclick="toggleDarkMode()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Goal Tracker</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Goals</th>
+                    <th>Progress</th>
+                </tr>
+            </thead>
+            <tbody id="goal-list">
+                <!-- Goals will be added here dynamically -->
+            </tbody>
+        </table>
+        <button onclick="addGoal()">Add Goal</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGoalsFromLocalStorage();
+        });
+
+        // Function to add a new goal
+        function addGoal() {
+            const goalList = document.getElementById("goal-list");
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td><input type="text" class="goal-input" placeholder="Enter your goal"></td>
+                <td class="rating-container">
+                    <span class="star" data-rating="1">☆</span>
+                    <span class="star" data-rating="2">☆</span>
+                    <span class="star" data-rating="3">☆</span>
+                    <span class="star" data-rating="4">☆</span>
+                    <span class="star" data-rating="5">☆</span>
+                </td>
+            `;
+            goalList.appendChild(newRow);
+            saveGoalsToLocalStorage(); // Save after adding a goal
+        }
+
+        // Function to handle star rating selection
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('star')) {
+                const stars = e.target.parentElement.querySelectorAll('.star');
+                const selectedRating = e.target.getAttribute('data-rating');
+                stars.forEach((star, index) => {
+                    star.classList.toggle('selected', index < selectedRating);
+                });
+                saveGoalsToLocalStorage(); // Save after updating rating
+            }
+        });
+
+        // Function to save goals and proficiency levels to localStorage
+        function saveGoalsToLocalStorage() {
+            const goals = [];
+            const goalRows = document.querySelectorAll('#goal-list tr');
+            goalRows.forEach(row => {
+                const goalInput = row.querySelector('.goal-input').value;
+                const selectedStars = row.querySelectorAll('.star.selected').length;
+                if (goalInput.trim()) {
+                    goals.push({ goal: goalInput, proficiency: selectedStars });
+                }
+            });
+            localStorage.setItem('goals', JSON.stringify(goals)); // Store data in localStorage
+        }
+
+        // Function to load goals from localStorage
+        function loadGoalsFromLocalStorage() {
+            const savedGoals = JSON.parse(localStorage.getItem('goals'));
+            if (savedGoals && savedGoals.length > 0) {
+                const goalList = document.getElementById("goal-list");
+                savedGoals.forEach(savedGoal => {
+                    const newRow = document.createElement("tr");
+                    newRow.innerHTML = `
+                        <td><input type="text" class="goal-input" value="${savedGoal.goal}" placeholder="Enter your goal"></td>
+                        <td class="rating-container">
+                            <span class="star" data-rating="1">☆</span>
+                            <span class="star" data-rating="2">☆</span>
+                            <span class="star" data-rating="3">☆</span>
+                            <span class="star" data-rating="4">☆</span>
+                            <span class="star" data-rating="5">☆</span>
+                        </td>
+                    `;
+                    goalList.appendChild(newRow);
+
+                    // Apply saved proficiency stars
+                    const stars = newRow.querySelectorAll('.star');
+                    stars.forEach((star, index) => {
+                        if (index < savedGoal.proficiency) {
+                            star.classList.add('selected');
+                        }
+                    });
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
