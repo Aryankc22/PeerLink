@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="image/yesthisisthefavicon-removebg-preview.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <title>Trivia Home Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            height: 100%;
+            --color: rgba(201, 28, 28, 0.3);
+            background-color: #ffffff;
+            background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
+            background-size: 55px 55px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, red, white);
+            color: #fff;
+            padding: 0 2rem;
+            height: 70px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 2px solid black;
+        }
+
+        .logo {
+            height: 50px;
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .logo img {
+            height: 150%;
+            width: auto;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 10vw;
+            padding: 2rem;
+        }
+
+        .card {
+            height: 200px;
+            width: 100%;
+            background: linear-gradient(to right, #ff6a00, #ee0979);
+            border-radius: 10px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .card h3 {
+            margin: 1rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .card p {
+            margin: 1rem;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        /* Dark mode switch styles */
+        .switch {
+            display: block;
+            --width-of-switch: 3.5em;
+            --height-of-switch: 2em;
+            --size-of-icon: 1.4em;
+            --slider-offset: 0.3em;
+            position: relative;
+            width: var(--width-of-switch);
+            height: var(--height-of-switch);
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f4f4f5;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: var(--size-of-icon,1.4em);
+            width: var(--size-of-icon,1.4em);
+            border-radius: 20px;
+            left: var(--slider-offset,0.3em);
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(40deg,#ff0080,#ff8c00 70%);
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #303136;
+        }
+
+        input:checked + .slider:before {
+            left: calc(100% - (var(--size-of-icon,1.4em) + var(--slider-offset,0.3em)));
+            background: #303136;
+            box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 0 #a3dafb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <button class="logo" onclick="location.href='index.html';">
+                <img src="image/plimg-removebg-preview.png" alt="*LOGO*">
+            </button>
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="cards-container">
+        <div class="card" onclick="window.location.href='trvque.html?category=9'">
+            <h3>General Knowledge</h3>
+            <p>Test your general knowledge skills with random trivia questions.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=11'">
+            <h3>Entertainment: Film</h3>
+            <p>Answer questions related to films and the movie industry.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=18'">
+            <h3>Science: Computers</h3>
+            <p>Test your knowledge of computers and technology.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=22'">
+            <h3>Geography</h3>
+            <p>Test your knowledge of world geography.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=23'">
+            <h3>History</h3>
+            <p>Answer questions related to historical events and facts.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=21'">
+            <h3>Sports</h3>
+            <p>Test your sports knowledge with questions about various sports.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=20'">
+            <h3>Music</h3>
+            <p>Answer questions about famous music artists, bands, and songs.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=12'">
+            <h3>Entertainment: Video Games</h3>
+            <p>Test your knowledge of video games and gaming culture.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=25'">
+            <h3>Art</h3>
+            <p>Test your knowledge of art history, artists, and techniques.</p>
+        </div>
+        <div class="card" onclick="window.location.href='trvque.html?category=30'">
+            <h3>Science: Gadgets</h3>
+            <p>Answer questions about the latest gadgets and technology.</p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle dark mode when the checkbox is clicked
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        
+        // Check if dark mode is already enabled
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+    </script>
+</body>
+
+</html>

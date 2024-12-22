@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="image/yesthisisthefavicon-removebg-preview.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <title>Trivia Questions</title>
+    <style>
+        /* Set black background and white text */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
+            height: 100%;
+        }
+
+        body.dark-mode {
+            background-color: #333;
+            color: #f9f9f9;
+        }
+
+        .trivia-container {
+            margin-top: 10rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .answer-btns {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .answer-btn {
+            background-color: #4CAF50;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            font-size: 1.1rem;
+        }
+
+        .answer-btn:hover {
+            background-color: #45a049;
+        }
+
+        .answer-btn.correct {
+            background-color: #4CAF50;
+        }
+
+        .answer-btn.wrong {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="trivia-container" id="trivia-container">
+        <!-- Trivia questions will be displayed here -->
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let questions = [];
+
+        function loadTrivia(category) {
+            const triviaContainer = document.getElementById('trivia-container');
+
+            // Fetch trivia questions based on category
+            fetch(`https://opentdb.com/api.php?amount=5&category=${category}&type=multiple`)
+                .then(response => response.json())
+                .then(data => {
+                    questions = data.results;
+                    displayQuestion();
+                })
+                .catch(error => console.log(error));
+        }
+
+        function displayQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                alert('You have completed all the questions!');
+                return;
+            }
+
+            const questionData = questions[currentQuestionIndex];
+            const allAnswers = [...questionData.incorrect_answers, questionData.correct_answer];
+            shuffleArray(allAnswers); // Shuffle the answers so correct answer is random
+
+            const triviaContainer = document.getElementById('trivia-container');
+            triviaContainer.innerHTML = `
+                <div class="question">${questionData.question}</div>
+                <div class="answer-btns">
+                    ${allAnswers.map(answer => `
+                        <button class="answer-btn" onclick="checkAnswer('${answer}', '${questionData.correct_answer}')">${answer}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function checkAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.answer-btn');
+            buttons.forEach(button => {
+                button.disabled = true; // Disable all buttons after an answer is selected
+                if (button.textContent === correct) {
+                    button.classList.add('correct');
+                } else if (button.textContent === selected) {
+                    button.classList.add('wrong');
+                }
+            });
+
+            if (selected === correct) {
+                alert('Correct!');
+            } else {
+                alert('Wrong!');
+            }
+
+            currentQuestionIndex++;
+            setTimeout(displayQuestion, 1000); // Move to next question after a short delay
+        }
+
+        // Function to shuffle the answers array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Automatically load trivia when the page loads
+        window.onload = function() {
+            const category = new URLSearchParams(window.location.search).get('category');
+            if (category) {
+                loadTrivia(category);
+            } else {
+                alert('Category not provided!');
+            }
+        }
+    </script>
+</body>
+
+</html>
