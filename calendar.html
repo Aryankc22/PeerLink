@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="image/yesthisisthefavicon-removebg-preview.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar with Task Feature</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            background-image: linear-gradient(0deg, transparent 24%, rgba(201, 28, 28, 0.3) 25%, rgba(201, 28, 28, 0.3) 26%, transparent 27%, transparent 74%, rgba(201, 28, 28, 0.3) 75%, rgba(201, 28, 28, 0.3) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(201, 28, 28, 0.3) 25%, rgba(201, 28, 28, 0.3) 26%, transparent 27%, transparent 74%, rgba(201, 28, 28, 0.3) 75%, rgba(201, 28, 28, 0.3) 76%, transparent 77%, transparent);
+            background-size: 55px 55px;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #ff6a00, #ff0080);
+            color: #fff;
+            padding: 1rem 2rem;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar-buttons button {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar-buttons button:hover {
+            background-color: #ff0080;
+        }
+
+        .switch {
+            display: block;
+            --width-of-switch: 3.5em;
+            --height-of-switch: 2em;
+            --size-of-icon: 1.4em;
+            --slider-offset: 0.3em;
+            position: relative;
+            width: var(--width-of-switch);
+            height: var(--height-of-switch);
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f4f4f5;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: var(--size-of-icon,1.4em);
+            width: var(--size-of-icon,1.4em);
+            border-radius: 20px;
+            left: var(--slider-offset,0.3em);
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(40deg, #ff0080, #ff8c00 70%);
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #303136;
+        }
+
+        input:checked + .slider:before {
+            left: calc(100% - (var(--size-of-icon,1.4em) + var(--slider-offset,0.3em)));
+            background: #303136;
+            box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 0 #a3dafb;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            padding-top: 90px;
+            height: 100vh;
+            gap: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .calendar-container {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .calendar-card {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .calendar-nav button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        .month-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .calendar .day {
+            padding: 15px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calendar .day:hover {
+            background-color: #ff0080;
+            color: #fff;
+        }
+
+        .calendar .day.disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+
+        .calendar .day.today {
+            background-color: #ff0080;
+            color: #fff;
+        }
+
+        .extra-space {
+            flex: 2;
+            background-color: #f4f4f5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            overflow-y: auto;
+            border-radius: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .extra-space h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .extra-space p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .extra-space .upcoming-task {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .extra-space .upcoming-task .remove-btn {
+            background-color: transparent;
+            border: none;
+            color: #ff0080;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .extra-space .upcoming-task .remove-btn:hover {
+            color: red;
+        }
+
+        body.dark-mode {
+            background-color: #333;
+        }
+
+        body.dark-mode .navbar {
+            background: linear-gradient(90deg, #ff6a00, #ff0080);
+        }
+
+        body.dark-mode .calendar-container,
+        body.dark-mode .calendar-card,
+        body.dark-mode .extra-space {
+            background-color: #444;
+            color: #f9f9f9;
+        }
+
+        body.dark-mode .calendar .day {
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode .calendar .day.today {
+            background-color: #ff0080;
+            color: #fff;
+        }
+
+        body.dark-mode .extra-space .upcoming-task {
+            background-color: #555;
+            color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .extra-space .upcoming-task:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar-buttons">
+            <button onclick="alert('New Task clicked!');">Add New Task</button>
+        </div>
+        <div class="right-section">
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <!-- Calendar Section -->
+        <div class="calendar-container">
+            <div class="calendar-card">
+                <div class="calendar-nav">
+                    <button onclick="previousMonth()">&#8592;</button>
+                    <div class="month-name"></div>
+                    <button onclick="nextMonth()">&#8594;</button>
+                </div>
+                <div class="calendar" id="calendar"></div>
+            </div>
+        </div>
+
+        <!-- Upcoming Tasks Section -->
+        <div class="extra-space" id="task-section">
+            <h3>Upcoming Tasks</h3>
+        </div>
+    </div>
+
+    <script>
+        const startYear = 2024;
+        const endYear = 2029;
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+        let currentMonth = currentDate.getMonth();
+        let currentDay = currentDate.getDate();
+
+        function updateCalendar() {
+            const monthName = document.querySelector('.month-name');
+            const calendar = document.getElementById('calendar');
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const startingDay = firstDay.getDay();
+
+            monthName.innerText = new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' }) + ' ' + currentYear;
+            calendar.innerHTML = '';
+
+            for (let i = 0; i < startingDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('day', 'disabled');
+                calendar.appendChild(emptyCell);
+            }
+
+            for (let date = 1; date <= lastDate; date++) {
+                const day = document.createElement('div');
+                day.classList.add('day');
+                day.innerText = date;
+
+                if (date === currentDay) {
+                    day.classList.add('today');
+                }
+
+                day.onclick = function () {
+                    setTask(date);
+                };
+
+                calendar.appendChild(day);
+            }
+        }
+
+        function previousMonth() {
+            if (currentMonth === 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            updateCalendar();
+        }
+
+        function nextMonth() {
+            if (currentMonth === 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            updateCalendar();
+        }
+
+        function displayTasks() {
+            const taskSection = document.getElementById('task-section');
+            taskSection.innerHTML = '<h3>Upcoming Tasks</h3>';
+
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
+            for (const date in tasks) {
+                if (tasks[date]) { // Only show tasks with content
+                    const task = document.createElement('div');
+                    task.classList.add('upcoming-task');
+                    task.innerText = `Task for ${date}: ${tasks[date]}`;
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.classList.add('remove-btn');
+                    removeBtn.innerText = 'X';
+                    removeBtn.onclick = function () {
+                        removeTask(date);
+                    };
+
+                    task.appendChild(removeBtn);
+                    taskSection.appendChild(task);
+                }
+            }
+        }
+
+        function setTask(date) {
+            const task = prompt(`Set task for ${date}:`);
+            if (task) {
+                const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
+                tasks[date] = task;
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                displayTasks();
+            }
+        }
+
+        function removeTask(date) {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
+            delete tasks[date];
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            displayTasks();
+        }
+
+        document.getElementById('dark-mode-toggle').addEventListener('change', function () {
+            document.body.classList.toggle('dark-mode', this.checked);
+        });
+
+        updateCalendar();
+        displayTasks();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="image/yesthisisthefavicon-removebg-preview.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <title>Study Materials</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            height: 100%;
+            --color: rgba(201, 28, 28, 0.3);
+            background-color: #ffffff;
+            background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
+            background-size: 55px 55px;
+        }
+
+        body.dark-mode {
+            background-color: #333;
+            color: #f9f9f9;
+        }
+
+        .navbar {
+            display: flex;
+            height: 70px;
+            justify-content: space-between;
+            align-items: center;
+            background:linear-gradient(90deg, red, white);
+            color: #333;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            border-bottom: 2px solid black;
+        }
+
+        .icon-container {
+            padding-left: 8vw;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        .icon-container img {
+            width: 30px;
+            height: 30px;
+            margin-right: 0.5rem;
+        }
+
+        .icon-container button {
+            background-color: white;
+            border: none;
+            font-size: 0.5rem;
+        }
+
+        /* Card Design */
+        .cards-container {
+            display: flex; /* Use flexbox to align the cards */
+            justify-content: center; /* Center the cards horizontally */
+            align-items: center; /* Vertically align the cards */
+            gap: 1rem; /* Space between cards */
+            margin-top: 10vw;
+            padding: 2rem;
+        }
+
+        .card {
+            width: 250px;
+            height: 200px;
+            background: linear-gradient(to right, #ff6a00, #ee0979);
+            border-radius: 10px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .card h3 {
+            margin: 1rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .card p {
+            margin: 1rem;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .card a {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: #fff;
+            color: #333;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .card a:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .row2 {
+            display: block;
+        }
+
+        /* From Uiverse.io by satyamchaudharydev */
+        /* The switch - the box around the slider */
+        .switch {
+            display: block;
+            --width-of-switch: 3.5em;
+            --height-of-switch: 2em;
+            /* size of sliding icon -- sun and moon */
+            --size-of-icon: 1.4em;
+            /* it is like an inline-padding of switch */
+            --slider-offset: 0.3em;
+            position: relative;
+            width: var(--width-of-switch);
+            height: var(--height-of-switch);
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .logo {
+            height: 50px;
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .logo img {
+            height: 150%;
+            width: auto;
+        }
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f4f4f5;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: var(--size-of-icon, 1.4em);
+            width: var(--size-of-icon, 1.4em);
+            border-radius: 20px;
+            left: var(--slider-offset, 0.3em);
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(40deg, #ff0080, #ff8c00 70%);
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #303136;
+        }
+
+        input:checked + .slider:before {
+            left: calc(100% - (var(--size-of-icon, 1.4em) + var(--slider-offset, 0.3em)));
+            background: #303136;
+            box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 0 #a3dafb;
+        }
+
+    </style>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <button class="logo" onclick="location.href='homePG.html'">
+                <img src="image/plimg-removebg-preview.png" alt="*LOGO*">
+            </button>
+        </div>
+
+        <div class="right-section">
+            <label class="switch">
+                <input type="checkbox" onclick="toggleDarkMode()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="cards-container">
+        <!-- Study Material Cards -->
+        <div class="card">
+            <h3>Physics Cycle</h3>
+            <p>Complete your physics preparation with this.</p>
+            <a href="phy.html">Start</a>
+        </div>
+        <div class="card">
+            <h3>Chemistry Cycle</h3>
+            <p>Complete your chemistry preparation with this.</p>
+            <a href="chem.html">Start</a>
+        </div>
+    </div>
+</body>
+
+</html>

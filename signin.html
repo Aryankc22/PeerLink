@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="image/yesthisisthefavicon-removebg-preview.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        /* UI remains unchanged */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #191a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: linear-gradient(0deg, transparent 24%, rgba(201, 28, 28, 0.3) 25%, rgba(201, 28, 28, 0.3) 26%, transparent 27%, transparent 74%, rgba(201, 28, 28, 0.3) 75%, rgba(201, 28, 0, 0.3) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(201, 28, 28, 0.3) 25%, rgba(201, 28, 28, 0.3) 26%, transparent 27%, transparent 74%, rgba(201, 28, 28, 0.3) 75%, rgba(201, 28, 0, 0.3) 76%, transparent 77%, transparent);
+            background-size: 55px 55px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 25px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            width: 360px;
+            max-width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            padding-right: 0px;
+        }
+
+        .input-field:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.7);
+            outline: none;
+        }
+
+        .input-field:invalid {
+            border-color: red;
+        }
+
+        .input-field:valid {
+            border-color: green;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        p {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        small {
+            display: block;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Sign In</h2>
+        <form id="signin-form" method="post">
+            <label for="username">Enter Username:</label>
+            <input type="text" id="username" name="username" class="input-field" placeholder="e.g IMS2xXXXXX" minlength="10" maxlength="10" required>
+
+            <label for="password">Enter Password:</label>
+            <input type="password" id="password" name="password" class="input-field" placeholder="At least 5 characters" minlength="5" maxlength="10" pattern="^[^_]+$" required>
+
+            <input type="submit" value="Sign In" class="submit-btn">
+        </form>
+
+        <p>Don't have an account? <a href="signup.html">Sign Up →</a></p>
+        <small>By creating an account, you comply with the rules. T&C applied.</small>
+    </div>
+
+    <script src="app.js"></script> <!-- Correctly link your app.js here -->
+</body>
+
+</html>
